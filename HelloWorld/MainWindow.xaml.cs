@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data.Entity;
 
 namespace HelloWorld
 {
@@ -25,21 +26,30 @@ namespace HelloWorld
         public MainWindow()
         {
             InitializeComponent();
-            WindowState = WindowState.Maximized;            
+            //WindowState = WindowState.Maximized;            
         }
 
         public override void EndInit()
         {
             base.EndInit();
-            uxName.DataContext = user;
-            uxNameError.DataContext = user;
-            uxPassword.DataContext = user;
-            uxPasswordError.DataContext = user;
+
+            //information for user comes from entity framework
+            var sample = new SampleEntities();
+
+            sample.Users.Load();
+
+            uxList.ItemsSource = sample.Users.Local;
         }
 
         private void uxSubmit_Click(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show("Submitting password: " + uxPassword.Text);
+            MessageBox.Show("Submitting password: " + uxPassword.Text);
+
+            //close the current window and launch the second window
+            var window = new SecondWindow();
+            Application.Current.MainWindow = window;
+            Close();
+            window.Show();
         }
         
         private void enableSubmit()

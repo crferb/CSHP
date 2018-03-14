@@ -14,6 +14,12 @@ namespace HelloWorld.Models
         private string nameError;
         private string passwordError;
 
+        //Override ToString to show the actual names
+        public override string ToString()
+        {
+            return name;
+        }
+
         public string NameError
         {
             get
